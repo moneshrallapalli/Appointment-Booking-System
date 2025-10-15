@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Time Slots</title>
+</head>
+<body>
+    <h2 th:text="'Add Time Slots for Group: ' + ${group.title}"></h2>
+    <form th:action="@{/professor-dashboard/group/{id}/slots(id=${group.id})}" th:object="${timeSlot}" method="post">
+        <label>Start Time:</label>
+        <input type="datetime-local" th:field="*{startTime}" required /><br/>
+        <label>End Time:</label>
+        <input type="datetime-local" th:field="*{endTime}" required /><br/>
+        <button type="submit">Add Slot</button>
+    </form>
+    <h3>Existing Slots</h3>
+    <ol>
+        <li th:each="slot : ${slots}">
+            <span th:text="${#temporals.format(slot.startTime, 'yyyy-MM-dd HH:mm')}"></span> -
+            <span th:text="${#temporals.format(slot.endTime, 'yyyy-MM-dd HH:mm')}"></span>
+            <span th:if="${slot.isBooked}">[Booked]</span>
+        </li>
+    </ol>
+    <a th:href="@{/professor-dashboard}">Back to Dashboard</a>
+</body>
+</html>

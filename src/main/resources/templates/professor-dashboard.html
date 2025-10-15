@@ -27,6 +27,7 @@
             <span th:text="${group.title}"></span> -
             <span th:text="${group.type}"></span>
             <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+            <a th:href="@{/professor-dashboard/group/{id}/slots(id=${group.id})}">Add/View Slots</a>
         </li>
     </ol>
 
@@ -36,6 +37,7 @@
             <span th:text="${group.title}"></span> -
             <span th:text="${group.type}"></span>
             <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+            <a th:href="@{/professor-dashboard/group/{id}/slots(id=${group.id})}">Add/View Slots</a>
         </li>
     </ol>
 
