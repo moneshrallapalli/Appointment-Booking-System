@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Professor Dashboard</title>
+</head>
+<body>
+    <h1>Professor Dashboard</h1>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+<!---is it possible to two sections here, one for indivisual appointments and one for groups?
+ change it to ol in sprint 2.
+
+
+    <h2>Your Appointment Groups</h2>
+    <ul>
+        <li th:each="group : ${groups}">
+            <span th:text="${group.title}"></span> -
+            <span th:text="${group.type}"></span>
+            <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </li>
+    </ul>  --->
+
+    <h2> Individual appointments</h2>
+    <ol>
+        <li th:each = "group: ${groups}" th:if="${group.type} == 'individual'">
+            <span th:text="${group.title}"></span> -
+            <span th:text="${group.type}"></span>
+            <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </li>
+    </ol>
+
+    <h2> Group appointments</h2>
+    <ol>
+        <li th:each = "group: ${groups}" th:if="${group.type} == 'group'">
+            <span th:text="${group.title}"></span> -
+            <span th:text="${group.type}"></span>
+            <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+        </li>
+    </ol>
+
+
+    <a th:href="@{/professor-dashboard/create-group}">Create New Group</a>
+</body>
+</html>

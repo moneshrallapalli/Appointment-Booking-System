@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Appointment Group</title>
+</head>
+<body>
+    <h2>Create Appointment Group</h2>
+    <form th:action="@{/professor-dashboard/create-group}" th:object="${appointmentGroup}" method="post">
+        <label>Title:</label>
+        <input th:field="*{title}" /><br/>
+        <label>Type:</label>
+        <select th:field="*{type}">
+            <option value="individual">Individual</option>
+            <option value="group">Group</option>
+            </select><br/>
+
+        <button type="submit">Create</button>
+    </form>
+    <a th:href="@{/professor-dashboard}">Back to Dashboard</a>
+</body>
+</html>
