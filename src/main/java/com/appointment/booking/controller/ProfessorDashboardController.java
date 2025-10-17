@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.appointment.booking.model.TimeSlot;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -83,15 +86,21 @@ public class ProfessorDashboardController {
         timeSlotRepository.save(newSlot);
     }
     return "redirect:/professor-dashboard/group/" + id + "/slots";
-}
+    }
 
-    
+    @PostMapping("/group/{id}/publish")
+    public String publishGroup(@PathVariable Long id){
+        AppointmentGroup group = appointmentGroupRepository.findById(id).orElse(null);
+        if (group != null) {
+            group.setStatus(AppointmentGroup.Status.PUBLISHED);
+            appointmentGroupRepository.save(group); }
 
-
-
+            return "redirect:/professor-dashboard";
         
- 
+        }
+    
 }
+    
 
 
 

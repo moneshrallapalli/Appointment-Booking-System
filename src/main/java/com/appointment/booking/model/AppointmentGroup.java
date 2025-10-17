@@ -7,6 +7,10 @@ import jakarta.persistence.TemporalType;
 
 @Entity
 public class AppointmentGroup {
+
+    public enum Status{DRAFT,PUBLISHED;}
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,6 +21,7 @@ public class AppointmentGroup {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     
+
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
@@ -33,5 +38,17 @@ public class AppointmentGroup {
     public Date getCreatedAt() {return createdAt;}
     public void setCreatedAt(Date createdAt) {this.createdAt = createdAt;}
 
+    
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.DRAFT;
+
+    public Status getStatus() {return status;}
+    public void setStatus(Status status) {this.status = status; }
+
+
+
+
+    
     
 }

@@ -28,9 +28,16 @@
             <span th:text="${group.type}"></span>
             <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
             <a th:href="@{/professor-dashboard/group/{id}/slots(id=${group.id})}">Add/View Slots</a>
+            <form th:action = "@{/professor-dashboard/group/{id}/publish(id = ${group.id})}" method="post" 
+                th:if="${group.status != null and group.status.name() == 'DRAFT'}">
+                    <button type = "submit">publish</button>
+            </form>
+            <span th:if="${group.status != null and group.status.name() == 'PUBLISHED'}">[Published]</span>
+
+    
         </li>
     </ol>
-
+ 
     <h2> Group appointments</h2>
     <ol>
         <li th:each = "group: ${groups}" th:if="${group.type} == 'group'">
@@ -38,6 +45,13 @@
             <span th:text="${group.type}"></span>
             <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
             <a th:href="@{/professor-dashboard/group/{id}/slots(id=${group.id})}">Add/View Slots</a>
+            <form th:action = "@{/professor-dashboard/group/{id}/publish(id = ${group.id})}" method="post" 
+                    th:if="${group.status != null and group.status.name() == 'DRAFT'}">
+                    <button type = "submit">publish</button>
+            </form>
+            <span th:if="${group.status != null and group.status.name() == 'PUBLISHED'}">[Published]</span>
+
+
         </li>
     </ol>
 

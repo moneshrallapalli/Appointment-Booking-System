@@ -19,35 +19,34 @@ public class TimeSlot {
     private AppointmentGroup appointmentGroup;
 
     public Long getId() {
-        return id;
-    }
+        return id; }
+
     public void setId(Long id) {
-        this.id = id;
-    }
+        this.id = id;}
+
     public LocalDateTime getStartTime() {
-        return startTime;
-    }
+        return startTime;}
+
     public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime; }
 
     public LocalDateTime getEndTime() {
-        return endTime;
-    }
+        return endTime; }
+
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime; }
 
     public boolean isBooked() {
-        return isBooked;
-    }
+        return isBooked; }
+
     public void setBooked(boolean booked) {
         isBooked = booked; }
 
     public AppointmentGroup getAppointmentGroup() {
         return appointmentGroup;}
+
     public void setAppointmentGroup(AppointmentGroup appointmentGroup) {
         this.appointmentGroup = appointmentGroup;}
-
-
 
     
 }
