@@ -1,6 +1,24 @@
+<!DOCTYPE html>
+<html xmlns : th="http://www.thymeleaf.org">
+<head>
+    <title>Student Dashboard</title>    
+</head>
+<body>
+
 <h1>Student Dashboard</h1>
-<p> Student Dashboard</p>
+<p>Available Appointment Groups</p>
+<ol>
+    <li th:each="group : ${groups}">
+        <span th:text="${group.title}"> </span>
+        <span th:text="${group.type}"> </span>
+        <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"> </span>
+        
+
+    </li>
+</ol>
 
 <form th:action="@{/logout}" method="post">
     <button type="submit"> Logout</button>
 </form>
+
+</body>

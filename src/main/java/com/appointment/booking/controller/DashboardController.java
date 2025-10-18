@@ -10,12 +10,12 @@ public class DashboardController {
     @GetMapping("/professor-dashboard")
     public String professorDashboard() {
         return "professor-dashboard"; 
-    } */
+    } 
 
     @GetMapping("/student-dashboard")
     public String studentDashboard() {
         return "student-dashboard";
-    }
+    } */
 
 
     @GetMapping("/ta-dashboard")
