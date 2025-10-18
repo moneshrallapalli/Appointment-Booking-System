@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${group.title}"></title>
+</head>
+<body>
+    <h2 th:text="${group.title}"></h2>
+    <ol>
+        <li th:each="slot : ${slots}">
+            
+            <span th:text="${#temporals.format(slot.startTime, 'yyyy-MM-dd HH:mm')}"></span> -
+            <span th:text="${#temporals.format(slot.endTime, 'yyyy-MM-dd HH:mm')}"></span>
+            <form th:action="@{/student-dashboard/group/{groupId}/slots/{slotId}/book(groupId=${group.id},slotId=${slot.id})}" method="post">
+                <button type="submit">Book</button>
+            </form>
+        </li>
+    </ol>
+<a th:href="@{/student-dashboard}">Back to dashboard</a>
+</body>
+</html>

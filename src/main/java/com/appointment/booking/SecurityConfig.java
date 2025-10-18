@@ -53,6 +53,7 @@ public class SecurityConfig {
             .requestMatchers("/professor-dashboard").hasRole("PROFESSOR")
             .requestMatchers("/student-dashboard").hasRole("STUDENT")
             .requestMatchers("/ta-dashboard").hasRole("TA")
+            .requestMatchers("/favicon.ico").permitAll() //some bug fix
             .anyRequest().authenticated()
             .and()
             .formLogin()

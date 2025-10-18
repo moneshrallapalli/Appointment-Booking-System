@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
     List<TimeSlot> findByAppointmentGroupId(Long appointmentGroupId);
+    List<TimeSlot> findByAppointmentGroupIdAndIsBookedFalse(Long groupid);
 }

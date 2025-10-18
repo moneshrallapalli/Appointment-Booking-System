@@ -13,7 +13,7 @@ public class TimeSlot {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean isBooked = false; //setting this to false by default means this is not yet boooked.
-
+    private String bookedBy;
     @ManyToOne
     @JoinColumn(name = "appointment_group_id")
     private AppointmentGroup appointmentGroup;
@@ -48,5 +48,11 @@ public class TimeSlot {
     public void setAppointmentGroup(AppointmentGroup appointmentGroup) {
         this.appointmentGroup = appointmentGroup;}
 
+    public String getBookedBy(){
+        return bookedBy;
     
+    }
+    public void setBookedBy(String bookedBy){
+        this.bookedBy = bookedBy;
+    }
 }

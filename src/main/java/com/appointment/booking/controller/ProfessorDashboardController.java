@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.appointment.booking.model.TimeSlot;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 

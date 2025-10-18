@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns : th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Student Dashboard</title>    
 </head>
@@ -12,7 +12,7 @@
         <span th:text="${group.title}"> </span>
         <span th:text="${group.type}"> </span>
         <span th:text="${#dates.format(group.createdAt, 'yyyy-MM-dd HH:mm')}"> </span>
-        
+        <a th:href="@{/student-dashboard/group/{id}/slots(id=${group.id})}">View Slots</a>
 
     </li>
 </ol>
