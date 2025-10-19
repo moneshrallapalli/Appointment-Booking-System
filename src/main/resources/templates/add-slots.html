@@ -18,6 +18,7 @@
             <span th:text="${#temporals.format(slot.startTime, 'yyyy-MM-dd HH:mm')}"></span> -
             <span th:text="${#temporals.format(slot.endTime, 'yyyy-MM-dd HH:mm')}"></span>
             <span th:if="${slot.isBooked}">[Booked]</span>
+            <span th:if="${slot.bookedBy != null}">by <span th:text="${slot.bookedBy}"></span></span>
         </li>
     </ol>
     <a th:href="@{/professor-dashboard}">Back to Dashboard</a>
