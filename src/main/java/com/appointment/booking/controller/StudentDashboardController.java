@@ -14,7 +14,8 @@ import com.appointment.booking.repository.TimeSlotRepository;
 import com.appointment.booking.model.AppointmentGroup;
 import com.appointment.booking.model.TimeSlot;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.ArrayList;
 
 
 
@@ -46,11 +47,25 @@ public class StudentDashboardController {
     
     
     @PostMapping("/student-dashboard/group/{id}/slots/{slotId}/book")
-    public String bookSlot(@PathVariable Long id, @PathVariable Long slotId, Principal principal) {
+    public String bookSlot(@PathVariable Long id, @PathVariable Long slotId,@RequestParam(required = false) String emails ,Principal principal) {
         TimeSlot slot = timeSlotRepository.findById(slotId).orElse(null);
         if (slot != null && !slot.isBooked()){
+            List<String> studentList = new ArrayList<>();
+            studentList.add(principal.getName());
+
+            if (emails != null && !emails.trim().isEmpty()) {
+                String[] additionalEmails = emails.split(",");
+                for (String email : additionalEmails) {
+                    String trimmedEmail = email.trim();
+                    if (!trimmedEmail.isEmpty()) {
+                        studentList.add(trimmedEmail);
+                    }
+                }
+            }
+
             slot.setBooked(true);
-            slot.setBookedBy(principal.getName());
+            slot.setBookedStudentsEmails(studentList);
+            //slot.setBookedBy(principal.getName());
             timeSlotRepository.save(slot);
         }
         return "redirect:/student-dashboard/group/"+ id +"/slots";
