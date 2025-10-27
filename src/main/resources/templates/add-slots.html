@@ -17,8 +17,11 @@
         <li th:each="slot : ${slots}">
             <span th:text="${#temporals.format(slot.startTime, 'yyyy-MM-dd HH:mm')}"></span> -
             <span th:text="${#temporals.format(slot.endTime, 'yyyy-MM-dd HH:mm')}"></span>
-            <span th:if="${slot.isBooked}">[Booked]</span>
-            <span th:if="${slot.bookedBy != null}">by <span th:text="${slot.bookedBy}"></span></span>
+            <span th:if="${slot.isBooked}">[Booked]
+            <!-- <span th:if="${slot.bookedBy != null}">by <span th:text="${slot.bookedBy}"></span></span> -->
+            <span th:if="${slot.bookedStudentsEmails != null and !slot.bookedStudentsEmails.isEmpty()}">
+                by <span th:text= "${#strings.listJoin(slot.bookedStudentsEmails, ', ')}"></span>
+            </span>
         </li>
     </ol>
     <a th:href="@{/professor-dashboard}">Back to Dashboard</a>
