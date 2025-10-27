@@ -11,7 +11,7 @@
             <span th:text="${#temporals.format(slot.startTime, 'yyyy-MM-dd HH:mm')}"></span> -
             <span th:text="${#temporals.format(slot.endTime, 'yyyy-MM-dd HH:mm')}"></span>
             <form th:action="@{/student-dashboard/group/{groupId}/slots/{slotId}/book(groupId=${group.id},slotId=${slot.id})}" method="post">
-                <div th:if="${group.type == 'group'"}>
+                <div th:if="${group.type == 'group'}">
                     <label> Add student's Emails</label><br>
                     <input type = "text" name = "emails" placeholder="student2@iu.edu, student3@iu.edu" style="width: 300px;">
                 </div>
