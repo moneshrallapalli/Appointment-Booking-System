@@ -1,6 +1,8 @@
 package com.appointment.booking.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 
@@ -13,7 +15,13 @@ public class TimeSlot {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private boolean isBooked = false; //setting this to false by default means this is not yet boooked.
-    private String bookedBy;
+    // private String bookedBy;  
+
+    @ElementCollection
+    @CollectionTable(name = "time_slot_bookings", joinColumns = @JoinColumn(name = "time_slot_id"))
+    @Column(name = "student_email")
+    private List<String> bookedStudentsEmails = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "appointment_group_id")
     private AppointmentGroup appointmentGroup;
@@ -48,11 +56,19 @@ public class TimeSlot {
     public void setAppointmentGroup(AppointmentGroup appointmentGroup) {
         this.appointmentGroup = appointmentGroup;}
 
-    public String getBookedBy(){
-        return bookedBy;
-    
+    public List<String> getBookedStudentsEmails() {
+        return bookedStudentsEmails;
     }
-    public void setBookedBy(String bookedBy){
-        this.bookedBy = bookedBy;
+    public void setBookedStudentsEmails(List <String> bookedStudentsEmails) {
+        this.bookedStudentsEmails = bookedStudentsEmails;
     }
+
+    // public String getBookedBy(){
+    //     return bookedBy; }
+    // public void setBookedBy(String bookedBy){
+    //     this.bookedBy = bookedBy;}
+
+
+
+
 }
