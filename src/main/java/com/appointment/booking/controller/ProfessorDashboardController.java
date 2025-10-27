@@ -3,18 +3,18 @@ import com.appointment.booking.model.AppointmentGroup;
 import com.appointment.booking.repository.AppointmentGroupRepository;
 import com.appointment.booking.repository.TimeSlotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.appointment.booking.model.TimeSlot;
 import org.springframework.web.bind.annotation.PostMapping;
-
-
-
 
 
 
@@ -98,6 +98,34 @@ public class ProfessorDashboardController {
             return "redirect:/professor-dashboard";
         
         }
+
+    @PostMapping("/group/{id}/slots/auto")
+    public String autoGenerateSlots(@PathVariable Long id, @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+                                    @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+                                    @RequestParam("durationInMinutes") int durationInMinutes) {     
+        AppointmentGroup group = appointmentGroupRepository.findById(id).orElse(null);
+
+        if (group != null) {
+            List <TimeSlot> slots = new ArrayList<>();
+
+            LocalDateTime current = startTime;
+            while (current.plusMinutes(durationInMinutes).isBefore(endTime) || current.plusMinutes(durationInMinutes).isEqual(endTime)) {
+                TimeSlot slot = new TimeSlot();
+                slot.setAppointmentGroup(group);
+                slot.setStartTime(current);
+                slot.setEndTime(current.plusMinutes(durationInMinutes));
+                slot.setBooked(false);  
+                slots.add(slot);
+                current = current.plusMinutes(durationInMinutes);
+            }
+            timeSlotRepository.saveAll(slots);
+        }
+
+        
+        
+        return "redirect:/professor-dashboard/group/" + id + "/slots";
+    }
+    
     
 }
     
