@@ -69,10 +69,12 @@ public class StudentDashboardController {
             timeSlotRepository.save(slot);
         }
         return "redirect:/student-dashboard/group/"+ id +"/slots";
-        
-        
     }
     
-
-    
+    @GetMapping("/student-dashboard/my-bookings")
+    public String viewMyBookings( Model model, Principal principal) {
+        List<TimeSlot> bookings = timeSlotRepository.findByStudentEmail(principal.getName());
+        model.addAttribute("bookings", bookings);
+        return "student-bookings";
+    }
 }

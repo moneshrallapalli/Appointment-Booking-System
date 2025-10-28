@@ -6,6 +6,9 @@
 <body>
 
 <h1>Student Dashboard</h1>
+<a th:href="@{/student-dashboard/my-bookings}">View My Bookings</a>
+<hr>
+
 <p>Available Appointment Groups</p>
 <ol>
     <li th:each="group : ${groups}">

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">  
+<head>
+    <title>My Bookings</title>
+</head>
+<body>
+     <h1>My Bookings</h1>
+
+     <div th:if="${bookings.isEmpty()}">
+        <p>You have no bookings yet.</p>
+    </div>
+
+    <div th:unless="${bookings.isEmpty()}">
+        <ol>
+            <li th:each="slot : ${bookings}">
+                <strong th:text="${slot.appointmentGroup.title}"></strong><br>
+                <span th:text="${#temporals.format(slot.startTime, 'yyyy-MM-dd HH:mm')}"></span> -
+                <span th:text="${#temporals.format(slot.endTime, 'yyyy-MM-dd HH:mm')}"></span><br>
+                <span th:if="${slot.bookedStudentsEmails.size() > 1}">
+                    Group booking with: <span th:text="${#strings.listJoin(slot.bookedStudentsEmails, ', ')}"></span>
+                </span>
+                <span th:unless="${slot.bookedStudentsEmails.size() > 1}">Individual booking</span>
+            </li>
+        </ol>
+    </div>
+
+    <a th:href="@{/student-dashboard}">Back to Dashboard</a>
+
+</body>
+
+</html>
