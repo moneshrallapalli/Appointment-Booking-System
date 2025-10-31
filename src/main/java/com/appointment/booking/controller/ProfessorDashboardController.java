@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.time.LocalDate;
 
 import com.appointment.booking.model.TimeSlot;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -127,13 +128,63 @@ public class ProfessorDashboardController {
 
             }
             timeSlotRepository.saveAll(slots);
-        }
-
-        
-        
+        } 
         return "redirect:/professor-dashboard/group/" + id + "/slots";
     }
     
+    @PostMapping("/group/{id}/slots/auto-multi-day")
+    public String autoGenerateMultiDaySlots(
+        @PathVariable Long id,
+        @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+        @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
+        @RequestParam("durationInMinutes") int durationInMinutes,
+        @RequestParam("selectedDates") String selectDates) {
+
+            AppointmentrGroup group = appointmentGroupRepository.findby(id).orElse(null);
+
+            if(group != numm){
+
+                String[] dateStrings = selectedDates.split(",");
+                List<LocalDate> dates = new ArrayList<>();
+
+                for (String dateStr : dateStrings) {
+                    try {
+                        dates.add(LocalDare.parse(dateStr.trim()));
+
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+
+                for (LocalDate date : dates) {
+                    List<Timeslots> slots = new ArrayList<>();
+                    LocalDateTime current = startTime;
+                    int slotCount = 0;
+                    while (current.plusMinutes(durationInMinutes).isBefore(endtime) || current.plusMinutes(durationInMinutes).isEqual(endtime)) {
+                        TimeSlot slot = new TimeSlot();
+                        slot.setAppointmentGroup(group);
+                        slot.setStartTime(current);
+                        slot.setEndTime(current.plusMinutes(durationInMinutes));
+                        slot.setSlotDate(date);
+                        slot.setBooked(false);
+                        slots.add(slot);
+                        slotCount++;
+                        current = current.plusMinutes(durationInMinutes);
+
+                        if (slotCount % 2 == 0) {
+                            current = current.plusMinutes(5);
+
+                        }
+                    }
+                    timeSlotRepository.saveAll(slots);
+
+                }
+            }
+            return "redirect:/professor-dashboard//group/" + id + "/slots";
+
+        }
+        
+    )
     
 }
     

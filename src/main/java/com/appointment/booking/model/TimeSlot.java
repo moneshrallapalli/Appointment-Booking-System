@@ -1,6 +1,7 @@
 package com.appointment.booking.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -21,6 +22,10 @@ public class TimeSlot {
     @CollectionTable(name = "time_slot_bookings", joinColumns = @JoinColumn(name = "time_slot_id"))
     @Column(name = "student_email")
     private List<String> bookedStudentsEmails = new ArrayList<>();
+
+    @Column(name = "slot_date")
+    private LocalDate slotDate;
+
 
     @ManyToOne
     @JoinColumn(name = "appointment_group_id")
@@ -61,6 +66,13 @@ public class TimeSlot {
     }
     public void setBookedStudentsEmails(List <String> bookedStudentsEmails) {
         this.bookedStudentsEmails = bookedStudentsEmails;
+    }
+
+    public LocalDate getSlotDate() {
+        return slotDate;
+    }
+    public void setSlotDate(LocalDate slotDate){
+        this.slotDate = slotDate;
     }
 
     // public String getBookedBy(){
