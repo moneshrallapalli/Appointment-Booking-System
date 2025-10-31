@@ -107,8 +107,9 @@ public class ProfessorDashboardController {
 
         if (group != null) {
             List <TimeSlot> slots = new ArrayList<>();
-
             LocalDateTime current = startTime;
+            int slotCount = 0;
+
             while (current.plusMinutes(durationInMinutes).isBefore(endTime) || current.plusMinutes(durationInMinutes).isEqual(endTime)) {
                 TimeSlot slot = new TimeSlot();
                 slot.setAppointmentGroup(group);
@@ -116,7 +117,14 @@ public class ProfessorDashboardController {
                 slot.setEndTime(current.plusMinutes(durationInMinutes));
                 slot.setBooked(false);  
                 slots.add(slot);
+                slotCount++;
                 current = current.plusMinutes(durationInMinutes);
+
+                if (slotCount %2 == 0) {
+                    current = current.plusMinutes(5);
+                    
+                }
+
             }
             timeSlotRepository.saveAll(slots);
         }
