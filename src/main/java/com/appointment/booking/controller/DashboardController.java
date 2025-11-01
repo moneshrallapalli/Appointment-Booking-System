@@ -22,4 +22,9 @@ public class DashboardController {
     public String taDashboard() {
         return "ta-dashboard"; }
 
+
+    @GetMapping("/")
+    public String redirectRoot() {
+      return "redirect:/login";
+  }
 }

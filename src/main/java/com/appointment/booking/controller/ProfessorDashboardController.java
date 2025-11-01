@@ -138,18 +138,18 @@ public class ProfessorDashboardController {
         @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
         @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime,
         @RequestParam("durationInMinutes") int durationInMinutes,
-        @RequestParam("selectedDates") String selectDates) {
+        @RequestParam("selectedDates") String selectedDates) {
 
-            AppointmentrGroup group = appointmentGroupRepository.findby(id).orElse(null);
+            AppointmentGroup group = appointmentGroupRepository.findById(id).orElse(null);
 
-            if(group != numm){
+            if(group != null){
 
                 String[] dateStrings = selectedDates.split(",");
                 List<LocalDate> dates = new ArrayList<>();
 
                 for (String dateStr : dateStrings) {
                     try {
-                        dates.add(LocalDare.parse(dateStr.trim()));
+                        dates.add(LocalDate.parse(dateStr.trim()));
 
                     } catch (Exception e) {
                         continue;
@@ -157,10 +157,13 @@ public class ProfessorDashboardController {
                 }
 
                 for (LocalDate date : dates) {
-                    List<Timeslots> slots = new ArrayList<>();
-                    LocalDateTime current = startTime;
+                    List<TimeSlot> slots = new ArrayList<>();
+//have to get time start and endtime
+                    LocalDateTime slotStart = LocalDateTime.of(date, startTime.toLocalTime());
+                    LocalDateTime slotEnd = LocalDateTime.of(date, endTime.toLocalTime()); 
+                    LocalDateTime current = slotStart;
                     int slotCount = 0;
-                    while (current.plusMinutes(durationInMinutes).isBefore(endtime) || current.plusMinutes(durationInMinutes).isEqual(endtime)) {
+                    while (current.plusMinutes(durationInMinutes).isBefore(slotEnd) || current.plusMinutes(durationInMinutes).isEqual(slotEnd)) {
                         TimeSlot slot = new TimeSlot();
                         slot.setAppointmentGroup(group);
                         slot.setStartTime(current);
@@ -180,11 +183,11 @@ public class ProfessorDashboardController {
 
                 }
             }
-            return "redirect:/professor-dashboard//group/" + id + "/slots";
+            return "redirect:/professor-dashboard/group/" + id + "/slots";
 
         }
         
-    )
+    
     
 }
     
