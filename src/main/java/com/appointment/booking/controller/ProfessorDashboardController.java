@@ -143,13 +143,21 @@ public class ProfessorDashboardController {
             AppointmentGroup group = appointmentGroupRepository.findById(id).orElse(null);
 
             if(group != null){
+                List<LocalDate> dates = new ArrayList<>();
+                LocalDate startDate = startTime.toLocalDate();
+                dates.add(startDate);
 
                 String[] dateStrings = selectedDates.split(",");
-                List<LocalDate> dates = new ArrayList<>();
+                
 
                 for (String dateStr : dateStrings) {
                     try {
-                        dates.add(LocalDate.parse(dateStr.trim()));
+                        LocalDate parsedDate = LocalDate.parse(dateStr.trim());
+                        if (!dates.contains(parsedDate)){
+                            dates.add(parsedDate);
+
+                        }
+                        //dates.add(LocalDate.parse(dateStr.trim()));
 
                     } catch (Exception e) {
                         continue;

@@ -5,6 +5,9 @@
 </head>
 <body>
     <h2 th:text="${group.title}"></h2>
+    <div th:if="${param.error != null and param.error[0] == 'alreadyBooked'}">
+        <p> ERROR: already booked a slot in this group.</p>
+    </div>
     <ol>
         <li th:each="slot : ${slots}">
             

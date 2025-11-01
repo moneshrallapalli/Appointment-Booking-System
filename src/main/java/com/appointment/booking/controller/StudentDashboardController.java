@@ -48,6 +48,13 @@ public class StudentDashboardController {
     
     @PostMapping("/student-dashboard/group/{id}/slots/{slotId}/book")
     public String bookSlot(@PathVariable Long id, @PathVariable Long slotId,@RequestParam(required = false) String emails ,Principal principal) {
+        String studentEmail = principal.getName();
+        Long alreadyBookedCount = timeSlotRepository.countBookingsByStudentInGroup(studentEmail,id);
+        if (alreadyBookedCount > 0){
+            return "redirect:/student-dashboard/group/" + id + "/slots?error=alreadyBooked";
+
+        }
+
         TimeSlot slot = timeSlotRepository.findById(slotId).orElse(null);
         if (slot != null && !slot.isBooked()){
             List<String> studentList = new ArrayList<>();

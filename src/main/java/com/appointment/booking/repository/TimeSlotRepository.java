@@ -14,5 +14,8 @@ public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
 
     @Query ("SELECT t FROM TimeSlot t WHERE :email MEMBER OF t.bookedStudentsEmails")
     List<TimeSlot> findByStudentEmail(@Param("email") String email);
+
+    @Query ("SELECT COUNT(t) FROM TimeSlot t WHERE :email MEMBER OF t.bookedStudentsEmails AND t.appointmentGroup.id = :groupId")
+    Long countBookingsByStudentInGroup(@Param("email") String email, @Param("groupId") Long groupId);
 }
 
