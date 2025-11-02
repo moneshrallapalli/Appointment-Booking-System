@@ -18,9 +18,9 @@ public class DashboardController {
     } */
 
 
-    @GetMapping("/ta-dashboard")
-    public String taDashboard() {
-        return "ta-dashboard"; }
+    // @GetMapping("/ta-dashboard")
+    // public String taDashboard() {
+    //     return "ta-dashboard"; }
 
 
     @GetMapping("/")

@@ -7,7 +7,8 @@
   <body>
       <h1>TA Dashboard</h1>
       <p>TA Dashboard</p>
-
+      <a th:href="@{/ta-dashboard/view-bookings}">View All Booked Appointments</a>
+      <hr>
       <form th:action="@{/logout}" method="post">
           <button type="submit">Logout</button>
       </form>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title> View Booked Appointments-TA</title>
+</head>
+<body>
+    <h1> Booked Appointments</h1>
+    <a th:href="@{/ta-dashboard}">Back to dashboard</a>
+    <hr>
+    <p th:if="${bookedSlots.isEmpty()}">No booked appointments.</p>
+
+    <table th:unless="${bookedSlots.isEmpty()}">
+        <thead>
+            <tr>
+                <th>Group Title</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Booked Students</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="slot : ${bookedSlots}">
+                <td th:text="${slot.appointmentGroup.title}"></td>
+                <td th:text="${#temporals.format(slot.startTime,'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${#temporals.format(slot.endTime,'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <ul th:if="${not slot.bookedStudentsEmails.isEmpty()}">
+                        <li th:each="email : ${slot.bookedStudentsEmails}" th:text= "${email}"></li>
+                    </ul>
+                    <span th:if="${slot.bookedStudentsEmails.isEmpty()}">No students booked</span>
+                </td>
+                
+            
+                
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+
+
+    </form>
+
+</body>
+</html>
