@@ -21,10 +21,10 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Create directory for SQLite database
-RUN mkdir -p /app/data
+RUN mkdir -p /opt/render/project/data
 
 # Set environment variable for database location
-ENV SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/booking-system.db
+# ENV SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/booking-system.db
 
 # Expose port 8080
 EXPOSE 8080

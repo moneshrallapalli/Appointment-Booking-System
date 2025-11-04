@@ -13,11 +13,18 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Set;
 import org.springframework.security.core.authority.AuthorityUtils;
-
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 
 public class SecurityConfig {
+
+    @Value("${ADMIN_USERNAME:admin}")
+    private String adminUsername;
+
+    @Value("${ADMIN_PASSWORD:adminpass}")
+    private String adminPassword;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
@@ -27,6 +34,9 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
+
+        UserDetails admin = User.withUsername(adminUsername).password(adminPassword).roles("ADMIN").build();
+
         UserDetails Professor = User.withUsername("Professor@iu.edu").password("profpass").roles("PROFESSOR").build();
 
         UserDetails student1 = User.withUsername("student1@iu.edu").password("student1").roles("STUDENT").build();
@@ -41,7 +51,7 @@ public class SecurityConfig {
         UserDetails ta1 = User.withUsername("ta1@iu.edu").password("tapass").roles("TA").build();
         UserDetails ta2 = User.withUsername("ta2@iu.edu").password("tapass").roles("TA").build();
 
-        return new InMemoryUserDetailsManager(Professor, student1, student2, student3, student4, student5, student6, student7, student8, ta1, ta2);
+        return new InMemoryUserDetailsManager(admin, Professor, student1, student2, student3, student4, student5, student6, student7, student8, ta1, ta2);
 
 
 
@@ -49,24 +59,34 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests()
+            .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers("/h2-console/**").hasRole("ADMIN")
             .requestMatchers("/professor-dashboard").hasRole("PROFESSOR")
             .requestMatchers("/student-dashboard").hasRole("STUDENT")
             .requestMatchers("/ta-dashboard").hasRole("TA")
             .requestMatchers("/favicon.ico").permitAll() //some bug fix
             .anyRequest().authenticated()
-            .and()
-            .formLogin()
+            )
+            .formLogin(form -> form
                 .loginPage("/login")
                 .successHandler(myAuthenticationSuccessHandler())
                 .permitAll()
-            .and()
-            .logout()
+            )
+            .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login?logout")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
-                .permitAll();
+                .permitAll()
+            )
+        
+// https://stackoverflow.com/questions/74710065/spring-security-6-0-allows-me-to-see-the-h2-console-login-page-but-doesnt-allow
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/h2-console/**")
+            )
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.sameOrigin())
+            );
 
         return http.build();
 
@@ -76,8 +96,8 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler(){
         return (request, response, authentication) -> {
             Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-
-            if (roles.contains("ROLE_PROFESSOR")) { response.sendRedirect("/professor-dashboard"); }
+            if (roles.contains("ROLE_ADMIN")) { response.sendRedirect("/h2-console");}
+            else if (roles.contains("ROLE_PROFESSOR")) { response.sendRedirect("/professor-dashboard"); }
             else if (roles.contains("ROLE_STUDENT")) { response.sendRedirect("/student-dashboard"); }
             else if (roles.contains("ROLE_TA")) { response.sendRedirect("/ta-dashboard"); }
             else { response.sendRedirect("/default"); }
