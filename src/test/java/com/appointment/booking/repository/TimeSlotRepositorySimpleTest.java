@@ -4,7 +4,8 @@ import com.appointment.booking.model.AppointmentGroup;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+// import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -16,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 
 @DataJpaTest
-
+@TestPropertySource(locations = "classpath:application-test.properties")
 class TimeSlotRepositorySimpleTest {
 
     @Autowired
@@ -25,8 +26,8 @@ class TimeSlotRepositorySimpleTest {
     @Autowired
     private AppointmentGroupRepository appointmentGroupRepository;
 
-    @Autowired
-    private TestEntityManager entityManager;
+    // @Autowired
+    // private TestEntityManager entityManager;
 
 
     @Test
@@ -37,18 +38,18 @@ class TimeSlotRepositorySimpleTest {
         group.setStatus(AppointmentGroup.Status.PUBLISHED);
         group.setCreatedAt(new Date());
         group.setType("individual");
-        entityManager.persistAndFlush(group);
-        // AppointmentGroup savedGroup = appointmentGroupRepository.save(group);
+        // entityManager.persistAndFlush(group);
+        AppointmentGroup savedGroup = appointmentGroupRepository.save(group);
         TimeSlot slot = new TimeSlot();
         slot.setStartTime(LocalDateTime.of(2025,11,04,10,0));
         slot.setEndTime(LocalDateTime.of(2025,11,04,11,0));
         slot.setBooked(false);
         slot.setSlotDate(LocalDate.of(2025,11,04));
-        slot.setAppointmentGroup(group);
-        entityManager.persistAndFlush(slot);
-        // timeSlotRepository.save(slot);
+        slot.setAppointmentGroup(savedGroup);
+        // entityManager.persistAndFlush(slot);
+        timeSlotRepository.save(slot);
 
-        List<TimeSlot> availableSlots = timeSlotRepository.findByAppointmentGroupIdAndIsBookedFalse(group.getId());
+        List<TimeSlot> availableSlots = timeSlotRepository.findByAppointmentGroupIdAndIsBookedFalse(savedGroup.getId());
 
         assertEquals(1, availableSlots.size());
         assertFalse(availableSlots.get(0).isBooked());
